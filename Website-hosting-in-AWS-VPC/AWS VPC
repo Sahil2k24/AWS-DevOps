@@ -1,0 +1,45 @@
+WEBSITE  HOSTING IN AWS VPC
+
+In order to create a robust and secure AWS Virtual Private Cloud (VPC) hosting a website, we will follow a series of steps to set up public and private subnets, configure routing tables, establish an Internet Gateway, create a Network Address Translation (NAT) Gateway, and deploy an Elastic Load Balancer (ELB) for efficient traffic distribution.
+
+Firstly, let's create a VPC:
+aws ec2 create-vpc --cidr-block 10.0.0.0/16
+
+Now, let's create four subnets within the VPC, two public and two private:
+aws ec2 create-subnet --vpc-id <your-vpc-id> --cidr-block 10.0.0.0/24
+aws ec2 create-subnet --vpc-id <your-vpc-id> --cidr-block 10.0.1.0/24
+aws ec2 create-subnet --vpc-id <your-vpc-id> --cidr-block 10.0.2.0/24
+aws ec2 create-subnet --vpc-id <your-vpc-id> --cidr-block 10.0.3.0/24
+
+Next, create an Internet Gateway and attach it to the VPC:
+aws ec2 create-internet-gateway
+aws ec2 attach-internet-gateway --vpc-id <your-vpc-id> --internet-gateway-id <your-internet-gateway-id>
+
+
+Now, create a route table for the public subnets and associate it with those subnets:
+aws ec2 create-route-table --vpc-id <your-vpc-id>
+aws ec2 associate-route-table --subnet-id <public-subnet-1-id> --route-table-id <public-route-table-id>
+aws ec2 associate-route-table --subnet-id <public-subnet-2-id> --route-table-id <public-route-table-id>
+Edit the route table to route traffic through the Internet Gateway, making these subnets public:
+aws ec2 create-route --route-table-id <public-route-table-id> --destination-cidr-block 0.0.0.0/0 --gateway-id <your-internet-gateway-id>
+
+Create an Elastic IP for the NAT Gateway:
+aws ec2 allocate-address
+Now, create a NAT Gateway in one of the public subnets and associate the Elastic IP:
+aws ec2 create-nat-gateway --subnet-id <public-subnet-1-id> --allocation-id <your-elastic-ip-allocation-id>
+Similarly, create a route table for the private subnets and associate it with those subnets:
+aws ec2 create-route-table --vpc-id <your-vpc-id>
+aws ec2 associate-route-table --subnet-id <private-subnet-1-id> --route-table-id <private-route-table-id>
+aws ec2 associate-route-table --subnet-id <private-subnet-2-id> --route-table-id <private-route-table-id>
+
+
+Edit the route table to route traffic through the NAT Gateway, making these subnets private:
+
+aws ec2 create-route --route-table-id <private-route-table-id> --destination-cidr-block 0.0.0.0/0 --nat-gateway-id <your-nat-gateway-id>
+Now, let's create a bastion host in one of the public subnets for secure access to resources in private subnets:aws ec2 run-instances --image-id <bastion-ami-id> --subnet-id <public-subnet-1-id> --instance-type <bastion-instance-type> --key-name <your-key-pair>
+
+Finally, create an Elastic Load Balancer (ELB) to distribute traffic to instances in the private subnet:
+
+aws elbv2 create-load-balancer --name <your-elb-name> --subnets <private-subnet-1-id> <private-subnet-2-id> --security-groups <your-elb-security-group-id>
+
+This comprehensive setup ensures a well-architected AWS VPC with public and private subnets, Internet and NAT Gateways, a bastion host for secure access, and an ELB for efficient website hosting. This configuration enables a secure, scalable, and highly available infrastructure for hosting a website in AWS.
