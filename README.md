@@ -1,6 +1,8 @@
 
 # 🚀 AWS Projects & Resources  
 
+![image](https://github.com/user-attachments/assets/39de6a25-4e49-44df-b6e9-8e9ce684c3e7)
+
 Welcome to the **AWS Projects & Resources** repository! This repository serves as a central hub for all my AWS-related content, including cloud deployments, automation scripts, DevOps pipelines, and hands-on projects.  
 
 ## 📌 About This Repository  
