@@ -1,5 +1,4 @@
 
-```md
 # 🚀 AWS Projects & Resources  
 
 Welcome to the **AWS Projects & Resources** repository! This repository serves as a central hub for all my AWS-related content, including cloud deployments, automation scripts, DevOps pipelines, and hands-on projects.  
@@ -37,4 +36,5 @@ _(More projects will be added soon!)_
 If you have any suggestions or want to contribute, feel free to submit a pull request or open an issue.  
 
 📌 _Happy Cloud Computing!_ ☁️🚀  
-```
+
+---
